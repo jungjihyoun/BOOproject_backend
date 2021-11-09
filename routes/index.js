@@ -5,27 +5,20 @@ var router = express.Router();
 const maria = require("../database/connect/maria");
 
 /* GET home page. */
-// router.get("/", function (req, res, next) {
-//   res.render("index", { title: "Express" });
-// });
-
 router.get("/", function (req, res, next) {
+  res.render("index", { title: "Express" });
+});
+
+router.get("/test", function (req, res, next) {
   maria.query("select * from t_product", function (err, rows, fields) {
     if (!err) {
-      console.log(rows);
-      console.log(fields);
       var result =
-        "rows : " +
-        JSON.stringify(rows) +
-        "<br><br>" +
-        "fields : " +
-        JSON.stringify(fields);
-      res.send(result);
+        "rows : " + JSON.stringify(rows) + "fields : " + JSON.stringify(fields);
+      res.send(rows);
     } else {
       console.log("query error : " + err);
-      res.send(err);
+      res.json(err);
     }
   });
 });
-
 module.exports = router;
