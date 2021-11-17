@@ -4,6 +4,38 @@ var router = express.Router();
 // requiree maria.js
 const maria = require("../database/connect/maria");
 
+// ******************
+const nodemailer = require("nodemailer");
+
+const smtpTransport = nodemailer.createTransport({
+  service: "Gmail",
+  auth: {
+    user: "jihyoun0602@gmail.com",
+    pass: "wlgus8402@",
+  },
+  tls: {
+    rejectUnauthorized: false,
+  },
+});
+
+router.post("/emailAuth", async (req, res) => {
+  const mailOptions = {
+    from: "jihyoun0602@gmail.com",
+    to: "jihyoun0602@naver.com",
+    subject: "인증받기",
+    text: "메일 내용 테스트 ! ",
+  };
+
+  await smtpTransport.sendMail(mailOptions, (error, responses) => {
+    if (error) {
+      res.json({ test: error });
+    } else {
+      res.json({ msg: "sucess" });
+    }
+    smtpTransport.close();
+  });
+});
+// ********
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
