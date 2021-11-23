@@ -39,7 +39,7 @@ router.post("/emailAuth", async (req, res) => {
 
   const mailOptions = {
     from: "jihyoun0602@gmail.com",
-    to: "jihyoun0602@naver.com",
+    to: req.body.userEmail,
     subject: "BooFinder 회원가입 인증메일 입니다.",
     html: emailTemplate,
   };
