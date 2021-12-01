@@ -96,14 +96,21 @@ router.post("/checkCode", function (req, res, next) {
 
 // [record] 이메일, 인증코드 , 유저 프로필 디비에 저장
 router.post("/setUser", function (req, res, next) {
+  console.log(
+    req.body.user_id,
+    req.body.password,
+    req.body.username,
+    req.body.birthday,
+    req.body.email
+  );
   maria.query(
-    "INSERT INTO user (user_id,password,username,birthday,email) VALUES('tester02','tester~','tester','1998-06-02','tester@gmail.com')",
+    `INSERT INTO user(user_id, password, username, birthday,email) VALUES  ("${req.body.user_id}","${req.body.password}","${req.body.username}","${req.body.birthday}","${req.body.email}")`,
+
     function (err, rows, fields) {
-      if (!err) {
-        console.log(result);
+      if (err) {
+        console.log("UserEnroll fail");
       } else {
-        console.log("query error : " + err);
-        res.send(err);
+        console.log("UserEnroll success");
       }
     }
   );
