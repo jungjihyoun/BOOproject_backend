@@ -95,7 +95,7 @@ router.get("/likes/:user_id", function (req, res, next) {
 
         var likeList = [];
         for (var data of rows) {
-          likeList.push(data.post_id);
+          likeList.push(data.subcharacter_id);
         }
         console.log(likeList);
         res.send(likeList);

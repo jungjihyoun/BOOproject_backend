@@ -68,25 +68,25 @@ router.get("/other/:user_id", function (req, res, next) {
 });
 
 // 좋아요 여부 불러오기
-router.get("/likes/:user_id", function (req, res, next) {
-  maria.query(
-    `select post_id from likes where user_id = '${req.params.user_id}'`,
-    function (err, rows, fields) {
-      if (err) {
-        console.log("get likeState fail", err);
-      } else {
-        console.log("get likeState success", rows);
+// router.get("/likes/:user_id", function (req, res, next) {
+//   maria.query(
+//     `select post_id from likes where user_id = '${req.params.user_id}'`,
+//     function (err, rows, fields) {
+//       if (err) {
+//         console.log("get likeState fail", err);
+//       } else {
+//         console.log("get likeState success", rows);
 
-        var likeList = [];
-        for (var data of rows) {
-          likeList.push(data.post_id);
-        }
-        console.log(likeList);
-        res.send(likeList);
-      }
-    }
-  );
-});
+//         var likeList = [];
+//         for (var data of rows) {
+//           likeList.push(data.post_id);
+//         }
+//         console.log(likeList);
+//         res.send(likeList);
+//       }
+//     }
+//   );
+// });
 
 // 좋아요
 router.post("/likes/:user_id/:post_id", function (req, res) {

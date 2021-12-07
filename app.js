@@ -28,6 +28,9 @@ app.use("/record", record);
 const subCharacter = require("./routes/subCharacter");
 app.use("/subCharacter", subCharacter);
 
+const image = require("./routes/image");
+app.use("/image", image);
+
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   next(createError(404));

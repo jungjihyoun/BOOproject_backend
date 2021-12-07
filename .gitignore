@@ -14,3 +14,5 @@ benchmarks/graphs
 maria.js
 
 emailRegister.js
+
+.env
