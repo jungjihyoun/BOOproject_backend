@@ -3,7 +3,7 @@ var express = require("express");
 var path = require("path");
 var cookieParser = require("cookie-parser");
 var logger = require("morgan");
-
+const session = require("express-session");
 var app = express();
 
 // view engine setup
@@ -19,8 +19,14 @@ app.use(express.static(path.join(__dirname, "public")));
 const auth = require("./routes/auth");
 app.use("/auth", auth);
 
-const topic = require("./routes/dashBoard");
-app.use("/dashBoard", topic);
+const user = require("./routes/user");
+app.use("/user", user);
+
+const record = require("./routes/record");
+app.use("/record", record);
+
+const subCharacter = require("./routes/subCharacter");
+app.use("/subCharacter", subCharacter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -37,6 +43,14 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render("error");
 });
+
+app.use(
+  session({
+    secret: "@wlgus8402",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 // mariaDB connect
 const maria = require("./database/connect/maria");

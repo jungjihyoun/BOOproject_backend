@@ -80,19 +80,19 @@ router.post("/checkEmail", function (req, res) {
 });
 
 // [register] 이메일 인증 코드 확인
-router.post("/checkCode", function (req, res, next) {
-  maria.query(
-    "INSERT INTO user (user_id,password,username,birthday,email) VALUES('tester02','tester~','tester','1998-06-02','tester@gmail.com')",
-    function (err, rows, fields) {
-      if (!err) {
-        console.log(result);
-      } else {
-        console.log("query error : " + err);
-        res.send(err);
-      }
-    }
-  );
-});
+// router.post("/checkCode", function (req, res, next) {
+//   maria.query(
+//     "INSERT INTO user (user_id,password,username,birthday,email) VALUES('tester02','tester~','tester','1998-06-02','tester@gmail.com')",
+//     function (err, rows, fields) {
+//       if (!err) {
+//         console.log(result);
+//       } else {
+//         console.log("query error : " + err);
+//         res.send(err);
+//       }
+//     }
+//   );
+// });
 
 // [record] 이메일, 인증코드 , 유저 프로필 디비에 저장
 router.post("/setUser", function (req, res, next) {
@@ -111,6 +111,28 @@ router.post("/setUser", function (req, res, next) {
         console.log("UserEnroll fail");
       } else {
         console.log("UserEnroll success");
+      }
+    }
+  );
+});
+
+// 로그인 , 로그아웃
+// 코드를 return
+router.post("/login/:email/:password", function (req, res, next) {
+  maria.query(
+    `select user_id from user where email = '${req.params.email}' AND password = '${req.params.password}'`,
+    function (err, rows, fields) {
+      if (err) {
+        return false;
+      } else {
+        console.log("Login success");
+        var user_id = "";
+        for (var data of rows) {
+          user_id = data.user_id;
+        }
+        return res
+          .status(200)
+          .json({ id: req.params.email, userCode: user_id });
       }
     }
   );
