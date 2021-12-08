@@ -1,5 +1,6 @@
 const shortid = require("shortid");
 const maria = require("../database/connect/maria");
+const s3 = require("../modules/multer");
 
 // ******************
 
@@ -21,26 +22,18 @@ const getSubcharacter = function (req, res, next) {
 
 // [record] 부캐릭터 쓰기
 const postSubCharacter = function (req, res, next) {
-  console.log(
-    req.params.user_id,
-    req.body.startDate,
-    req.body.title,
-    req.body.subtitle,
-    req.body.goal,
-    req.body.img_path
-  );
+  const ima_path = req.file.location;
+
+  const post_id = `BO${shortid.generate()}`;
   maria.query(
-    `INSERT INTO subcharacter(user_id,  subcharacter_id , startDate, title, subtitle , goal) VALUES  ("${
-      req.params.user_id
-    }","BO${shortid.generate()}","${req.body.startDate}","${req.body.title}","${
-      req.body.subtitle
-    }","${req.body.goal}")`,
+    `INSERT INTO subcharacter(user_id,  subcharacter_id ,img_path,  startDate, title, subtitle , goal , secret) VALUES  ("${req.params.user_id}","${post_id}","${ima_path}","${req.body.startDate}","${req.body.title}","${req.body.subtitle}","${req.body.goal}","${req.body.secret}")`,
 
     function (err, rows, fields) {
       if (err) {
         console.log("post Subcharacter fail", err);
       } else {
         console.log("post Subcharacter success");
+        res.json({ status: 200, body: req.file });
       }
     }
   );
@@ -153,6 +146,22 @@ const postSubCharacterLike = function (req, res) {
   }
 };
 
+const postImage = function (req, res, next) {
+  console.log(req);
+  maria.query(
+    `update subcharacter set img_path = '${req.file.location}' where post_id= '${req.params.post_id}'`,
+    function (err, rows, fields) {
+      if (err) {
+        console.log("사진 추가 실패", err);
+      } else {
+        console.log("사진 추가 성공", rows);
+        res.json({ status: 200, uri: req.file.location });
+      }
+    }
+  );
+  next();
+};
+
 module.exports = {
   getSubcharacter,
   postSubCharacter,
@@ -160,4 +169,5 @@ module.exports = {
   getOtherSubcharacter,
   getLike,
   postSubCharacterLike,
+  postImage,
 };

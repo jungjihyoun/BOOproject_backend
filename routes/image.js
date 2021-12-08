@@ -2,12 +2,20 @@ const express = require("express");
 const router = express.Router();
 const path = require("path");
 const s3 = require("../modules/multer");
+const subCharacterController = require("../controllers/subCharacterController");
+const recordController = require("../controllers/recordController");
 
-router.post("/upload", s3.upload.single("file"), function (req, res, next) {
-  console.log(req.file.location);
-  res.json({ status: 200, uri: req.file.location });
+// 부캐 사진 등록
+// router.post(
+//   "/upload/:user_id",
+//   s3.upload.single("file"),
+//   subCharacterController.postSubCharacter
+// );
 
-  // DB에 해당 location 저장
-});
+// router.post(
+//   "/upload/:post_id",
+//   s3.upload.single("file"),
+//   recordController.postImage
+// );
 
 module.exports = router;

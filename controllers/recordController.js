@@ -136,9 +136,24 @@ const postRecordLike = function (req, res) {
   }
 };
 
+const postImage = function (req, res, next) {
+  maria.query(
+    `update post set img_path = '${req.file.location}' where post_id= '${req.params.post_id}'`,
+    function (err, rows, fields) {
+      if (err) {
+        console.log("사진 추가 실패", err);
+      } else {
+        console.log("사진 추가 성공", rows);
+        res.json({ status: 200, uri: req.file.location });
+      }
+    }
+  );
+};
+
 module.exports = {
   postRecord,
   deleteRecord,
   getOthersRecord,
   postRecordLike,
+  postImage,
 };
