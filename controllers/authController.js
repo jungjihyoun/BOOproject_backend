@@ -107,10 +107,11 @@ const login = function (req, res, next) {
   maria.query(
     `select user_id from user where email = '${req.params.email}' AND password = '${req.params.password}'`,
     function (err, rows, fields) {
-      if (err) {
-        return false;
+      if (rows.length <= 0) {
+        return res
+          .status(304)
+          .json({ message: "아이디와 비밀번호를 확인해주세요" });
       } else {
-        console.log("Login success");
         var user_id = "";
         for (var data of rows) {
           user_id = data.user_id;
